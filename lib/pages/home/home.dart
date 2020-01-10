@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../new_page/new_page.dart';
+import 'widget1.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -12,10 +13,39 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   int _counter = 0;
 
   int _selectedIndex = 1;
+
+  @override
+  void initState() {
+    print('initState');
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    print('didChangeDependencies');
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didUpdateWidget(MyHomePage oldWidget) {
+    print('didUpdateWidget');
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -30,46 +60,78 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _callback(int val) {
+    if (val != null) {
+      setState(() {
+        _counter = val;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                '_counters:$_counter',
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Offstage(
+              offstage: _selectedIndex != 0,
+              child: StateWrap(
+                title: '我的组件',
+                onPress: _incrementCounter,
               ),
-              FlatButton(
-                child: Text("open new route"),
-                textColor: Colors.blue,
-                onPressed: () {
-                  //导航到新路由
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return NewRoute();
-                  }));
-                },
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
-          tooltip: 'Increment',
-          child: Icon(Icons.add),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
-            BottomNavigationBarItem(icon: Icon(Icons.business), title: Text('Business')),
-            BottomNavigationBarItem(icon: Icon(Icons.school), title: Text('School')),
+            ),
+            Offstage(
+              offstage: _selectedIndex != 1,
+              child: Column(children: <Widget>[
+                Text(
+                  '_counters:$_counter',
+                ),
+                FlatButton(
+                  child: Text("open new route"),
+                  textColor: Colors.blue,
+                  onPressed: () async {
+                    //导航到新路由
+                    var res = await Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return NewRoute(text: '参数 text');
+                    }));
+                    _callback(res);
+                  },
+                ),
+              ]),
+            ),
+            // Offstage(
+            //     offstage: _selectedIndex != 2,
+            //     child: ListView.builder(
+            //         itemCount: 100,
+            //         itemExtent: 50.0, //强制高度为50.0
+            //         itemBuilder: (BuildContext context, int index) {
+            //           return ListTile(title: Text("$index"));
+            //         })),
           ],
-          currentIndex: _selectedIndex,
-          fixedColor: Colors.blue,
-          onTap: _onItemTapped,
+        ),
+      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'Increment',
+      //   child: Icon(Icons.add),
+      // ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.business), title: Text('Business')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.school), title: Text('School')),
+        ],
+        currentIndex: _selectedIndex,
+        fixedColor: Colors.blue,
+        onTap: _onItemTapped,
       ),
     );
   }
