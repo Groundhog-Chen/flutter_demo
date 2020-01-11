@@ -1,20 +1,29 @@
+import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import './pages/home/home.dart';
-import './pages/new_page/new_page.dart';
 
-void main() => runApp(MyApp());
+import './pages/fish_page/page.dart';
+import './pages/grid_page/page.dart';
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      routes: {"new_page": (context, {text}) => NewRoute(text: text)},
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+void main() => runApp(createApp());
+
+Widget createApp() {
+  final AbstractRoutes routes = PageRoutes(
+    pages: <String, Page<Object, dynamic>>{
+      'entrance_page': FishPage(),
+      'grid_page': GridPage(),
+    },
+  );
+
+  return MaterialApp(
+    title: 'FishDemo',
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+    ),
+    home: routes.buildPage('entrance_page', null),  //把他作为默认页面
+    onGenerateRoute: (RouteSettings settings) {
+      return MaterialPageRoute<Object>(builder: (BuildContext context) {
+        return routes.buildPage(settings.name, settings.arguments);
+      });
+    },
+  );
 }
