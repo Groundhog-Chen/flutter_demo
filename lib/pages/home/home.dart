@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../new_page/new_page.dart';
 import 'widget1.dart';
+
+import 'package:dio/dio.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -16,35 +17,19 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   int _selectedIndex = 1;
+  var _ipAddress = 'Unknown';
+
+  Future<dynamic> _getIPAddress() async {
+    Dio dio = Dio();
+    final Response response =
+        await dio.get("https://weapp.ckudz.cn/charge_station/1");
+    print(response.data);
+  }
 
   @override
   void initState() {
-    print('initState');
+    _getIPAddress();
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    print('didChangeDependencies');
-    super.didChangeDependencies();
-  }
-
-  @override
-  void didUpdateWidget(MyHomePage oldWidget) {
-    print('didUpdateWidget');
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void deactivate() {
-    print('deactivate');
-    super.deactivate();
-  }
-
-  @override
-  void dispose() {
-    print('dispose');
-    super.dispose();
   }
 
   void _onItemTapped(int index) {
@@ -81,8 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Offstage(
               offstage: _selectedIndex != 0,
               child: StateWrap(
-                title: '我的组件',
-                onPress: _incrementCounter,
+                title: '$_ipAddress'
               ),
             ),
             Offstage(
@@ -116,11 +100,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: Icon(Icons.add),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
