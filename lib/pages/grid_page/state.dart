@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 
-import '../../model/mock/grid.dart';
+import '../../model/mock/model.dart';
 
 class GridState implements Cloneable<GridState> {
 

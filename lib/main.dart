@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import './pages/fish_page/page.dart';
 import './pages/grid_page/page.dart';
+import './pages/list_page/page.dart';
 
 void main() => runApp(createApp());
 
@@ -11,6 +12,7 @@ Widget createApp() {
     pages: <String, Page<Object, dynamic>>{
       'entrance_page': FishPage(),
       'grid_page': GridPage(),
+      'list_page': ListPage(),
     },
   );
 
