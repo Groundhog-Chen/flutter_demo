@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import '../new_page/new_page.dart';
 import 'widget1.dart';
-
-import 'package:dio/dio.dart';
+import 'widget2.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -16,32 +15,23 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   var _ipAddress = 'Unknown';
-
-  Future<dynamic> _getIPAddress() async {
-    Dio dio = Dio();
-    final Response response =
-        await dio.get("https://weapp.ckudz.cn/charge_station/1");
-    print(response.data);
-  }
 
   @override
   void initState() {
-    _getIPAddress();
     super.initState();
+  }
+  
+  @override
+  void deactivate() {
+    print('home deactivate');
+    super.deactivate();
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-    });
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-      print(_counter);
     });
   }
 
@@ -51,6 +41,11 @@ class _MyHomePageState extends State<MyHomePage> {
         _counter = val;
       });
     }
+    print(val);
+  }
+
+  _askedToLead() {
+    
   }
 
   @override
@@ -58,6 +53,43 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          /*
+          下面是一个弹出菜单按钮，包含两个属性点击属性和弹出菜单子项的建立
+          其中<String>是表示这个弹出菜单的value内容是String类型
+           */
+          PopupMenuButton<String>(
+              //这是点击弹出菜单的操作，点击对应菜单后，改变屏幕中间文本状态，将点击的菜单值赋予屏幕中间文本
+              onSelected: (String value) {
+                print(value);
+                setState(() {
+                  _ipAddress = value;
+                });
+              },
+              //这是弹出菜单的建立，包含了两个子项，分别是增加和删除以及他们对应的值
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                    PopupMenuItem(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text('增加'),
+                          Icon(Icons.add_circle)
+                        ],
+                      ),
+                      value: '这是增加',
+                    ),
+                    PopupMenuItem(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text('删除'),
+                          Icon(Icons.remove_circle)
+                        ],
+                      ),
+                      value: '这是删除',
+                    )
+                  ])
+        ]
       ),
       body: Center(
         child: Column(
@@ -66,7 +98,8 @@ class _MyHomePageState extends State<MyHomePage> {
             Offstage(
               offstage: _selectedIndex != 0,
               child: StateWrap(
-                title: '$_ipAddress'
+                title: '$_ipAddress',
+                onPress: _askedToLead(),
               ),
             ),
             Offstage(
@@ -89,6 +122,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ]),
             ),
+             Offstage(
+              offstage: _selectedIndex != 2,
+              child: Widget2(
+                title: '组件2',
+                tabIndex: _selectedIndex,
+              ),
+            ),
             // Offstage(
             //     offstage: _selectedIndex != 2,
             //     child: ListView.builder(
@@ -96,14 +136,10 @@ class _MyHomePageState extends State<MyHomePage> {
             //         itemExtent: 50.0, //强制高度为50.0
             //         itemBuilder: (BuildContext context, int index) {
             //           return ListTile(title: Text("$index"));
-            //         })),
+            //         })
+            //   ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
