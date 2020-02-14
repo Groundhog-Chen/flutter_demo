@@ -15,40 +15,23 @@ class MyComponent extends State<Widget2> {
 
   String name = 'tony';
 
+  List data;
+
   Future<dynamic> initData() async {
     Dio dio = Dio();
-    final Response response = await dio.get("https://weapp.ckudz.cn/charge_station/1");
+    final Response response = await dio.get("https://putian.ckudz.cn:8086/charge_stations?latitude=22.71991&longitude=114.24779&limit=20&page=1&attribute=01&name=");
     setState(() {
-      name = response.data['data']['name'];
+      data = response.data['data']['result'].toList();
     });
-  }
-
-  @override
-  void initState() {
-    
-    super.initState();
-  }
-
-  @override
-  void deactivate() {
-    print('组件2 deactivate');
-    super.deactivate();
+    print(response.data['data']);
   }
 
   @override
   void didUpdateWidget(Widget2 oldWidget) {       
-    if(widget.tabIndex == 2 && name != '深圳志达工业园充电站') {
-      print("didUpdateWidget");
-      print(widget.tabIndex);
+    if(widget.tabIndex == 2) {
       initData();
     } 
     super.didUpdateWidget(oldWidget);   
-  }
-
-  @override
-  void didChangeDependencies() {
-    print("didChangeDependencies");
-    super.didChangeDependencies();      
   }
 
   // props 从 widget.xxx 获取
