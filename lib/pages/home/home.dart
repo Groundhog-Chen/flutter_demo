@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'dart:ui';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../new_page/new_page.dart';
+// import '../new_page/new_page.dart';
 import 'widget1.dart';
 import 'widget2.dart';
 
@@ -16,10 +16,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  int _counter = 0;
 
-  int _selectedIndex = 2;
-  var _ipAddress = 'Unknown';
+  int _selectedIndex = 0;
+
 
   @override
   void initState() {
@@ -38,16 +37,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _callback(int val) {
-    if (val != null) {
-      setState(() {
-        _counter = val;
-      });
-    }
-    print(val);
-  }
-
-  _askedToLead() {}
+  List<Widget> bodyNode = <Widget>[
+    Widget2(),
+    StateWrap(title: 'Business', onPress: () {},),
+    StateWrap(title: 'School', onPress: () {},)
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -90,56 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Offstage(
-              offstage: _selectedIndex != 0,
-              child: StateWrap(
-                title: '$_ipAddress',
-                onPress: _askedToLead(),
-              ),
-            ),
-            Offstage(
-              offstage: _selectedIndex != 1,
-              child: Column(children: <Widget>[
-                Text(
-                  '_counters:$_counter',
-                ),
-                FlatButton(
-                  child: Text("open new route"),
-                  textColor: Colors.blue,
-                  onPressed: () async {
-                    //导航到新路由
-                    var res = await Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return NewRoute(text: '参数 text');
-                    }));
-                    _callback(res);
-                  },
-                ),
-              ]),
-            ),
-            Offstage(
-              offstage: _selectedIndex != 2,
-              child: Widget2(
-                title: '组件2',
-                tabIndex: _selectedIndex,
-              ),
-            ),
-            // Offstage(
-            //     offstage: _selectedIndex != 2,
-            //     child: ListView.builder(
-            //         itemCount: 100,
-            //         itemExtent: 50.0, //强制高度为50.0
-            //         itemBuilder: (BuildContext context, int index) {
-            //           return ListTile(title: Text("$index"));
-            //         })
-            //   ),
-          ],
-        ),
-      ),
+      body:bodyNode.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
