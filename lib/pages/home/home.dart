@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 // import 'dart:ui';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import '../new_page/new_page.dart';
-import 'widget1.dart';
-import 'widget2.dart';
+// import 'widget1.dart';
+import 'list_widget.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -15,10 +15,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-
   int _selectedIndex = 0;
-
 
   @override
   void initState() {
@@ -37,148 +34,172 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  List<Widget> bodyNode = <Widget>[
-    Widget2(),
-    StateWrap(title: 'Business', onPress: () {},),
-    StateWrap(title: 'School', onPress: () {},)
+  // Tab 列表内容
+  List<Widget> bodyWidgets = <Widget>[
+    TabBarView(children: <Widget>[
+      ListWidget(),
+      Text('2'),
+      Text('3'),
+      Text('4'),
+      Text('5'),
+      Text('6')
+    ]),
+    Text('Map'),
+    Text('Forum'),
+    Text('Person'),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: 
-      AppBar(        
-        title: Text(widget.title),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            tooltip: 'search',
-            onPressed: () {
-              return showDialog<Null>(
-                context: context,
-                barrierDismissible: false, // user must tap button!
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('Rewind and remember'),
-                    content: SingleChildScrollView(
-                      child: ListBody(
-                        children: <Widget>[
-                          Text('You will never be satisfied.'),
-                          Text('You\’re like me. I’m never satisfied.'),
-                        ],
-                      ),
-                    ),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text('Regret'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
+    return MaterialApp(
+      home: DefaultTabController(
+        length: choices.length,
+        initialIndex: 1,
+        child: Scaffold(
+            backgroundColor: Colors.grey.shade200,
+            appBar: <Widget>[
+              AppBar(
+                title: Text('Home'),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: () {
+                      showDialog<Null>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SimpleDialog(
+                            title: Text('选择'),
+                            children: <Widget>[
+                              SimpleDialogOption(
+                                child: Text('选项 1'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              SimpleDialogOption(
+                                child: Text('选项 2'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
                         },
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
-        ],
-      ),
-      body:bodyNode.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.business), title: Text('Business')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.school), title: Text('School')),
-        ],
-        currentIndex: _selectedIndex,
-        fixedColor: Colors.blue,
-        onTap: _onItemTapped,
+                      ).then((val) {
+                        print(val);
+                      });
+                    },
+                  ),
+                ],
+                bottom: TabBar(
+                  isScrollable: true,
+                  tabs: choices.map((Choice choice) {
+                    return Tab(text: choice.title);
+                  }).toList(),
+                ),
+              ),
+              AppBar(title: Text('Map')),
+              AppBar(title: Text('Forum')),
+              AppBar(title: Text('Person'))
+            ].elementAt(_selectedIndex),
+            body: bodyWidgets.elementAt(_selectedIndex),
+            drawer: DrawerSection(),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                // Add your onPressed code here!
+              },
+              child: Icon(Icons.camera_alt),
+              backgroundColor: Colors.blue,
+            ),
+            bottomNavigationBar: 
+            // BottomAppBar(
+            //   color: Colors.white,
+            //   shape: CircularNotchedRectangle(), // 底部导航栏打一个圆形的洞
+            //   child: Row(
+            //     children: [
+            //       IconButton(
+            //           icon: Icon(Icons.home),
+            //           onPressed: () {
+            //           }),
+            //       SizedBox(), //中间位置空出
+            //       IconButton(
+            //           icon: Icon(Icons.business),
+            //           onPressed: () {
+            //           }),
+            //     ],
+            //     mainAxisAlignment: MainAxisAlignment.spaceAround, //均分底部导航栏横向空间
+            //   ),
+            // )
+            BottomNavigationBar(
+              backgroundColor: Colors.blue,
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.pets), title: Text('Home')),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.map), title: Text('Map')),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.forum), title: Text('Forum')),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person), title: Text('Person')),
+              ],
+              fixedColor: Colors.blue,
+              selectedFontSize: 10.0,
+              unselectedItemColor: Colors.grey,
+              currentIndex: _selectedIndex,
+              onTap: _onItemTapped,
+            )
+            ),
       ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MaterialApp(
-  //     home: DefaultTabController(
-  //       length: choices.length,
-  //       child: Scaffold(
-  //           appBar: AppBar(
-  //             title: const Text('Tabbed AppBar'),
-  //             bottom: TabBar(
-  //               isScrollable: true,
-  //               tabs: choices.map((Choice choice) {
-  //                 return Tab(
-  //                   text: choice.title,
-  //                   icon: Icon(choice.icon),
-  //                 );
-  //               }).toList(),
-  //             ),
-  //           ),
-  //           body: TabBarView(
-  //             children: choices.map((Choice choice) {
-  //               return Padding(
-  //                 padding: const EdgeInsets.all(16.0),
-  //                 child: ChoiceCard(choice: choice),
-  //               );
-  //             }).toList(),
-  //           ),
-  //           bottomNavigationBar: BottomNavigationBar(
-  //             items: <BottomNavigationBarItem>[
-  //               BottomNavigationBarItem(
-  //                   icon: Icon(Icons.home), title: Text('Home')),
-  //               BottomNavigationBarItem(
-  //                   icon: Icon(Icons.business), title: Text('Business')),
-  //               BottomNavigationBarItem(
-  //                   icon: Icon(Icons.school), title: Text('School')),
-  //             ],
-  //             currentIndex: _selectedIndex,
-  //             fixedColor: Colors.blue,
-  //             onTap: _onItemTapped,
-  //           )),
-  //     ),
-  //   );
-  // }
 }
 
-// class Choice {
-//   const Choice({this.title, this.icon});
-//   final String title;
-//   final IconData icon;
-// }
+class Choice {
+  const Choice({this.title, this.icon});
+  final String title;
+  final IconData icon;
+}
 
-// const List<Choice> choices = const <Choice>[
-//   const Choice(title: 'CAR', icon: Icons.directions_car),
-//   const Choice(title: 'BICYCLE', icon: Icons.directions_bike),
-//   const Choice(title: 'BOAT', icon: Icons.directions_boat),
-//   const Choice(title: 'BUS', icon: Icons.directions_bus),
-//   const Choice(title: 'TRAIN', icon: Icons.directions_railway),
-//   const Choice(title: 'WALK', icon: Icons.directions_walk),
-// ];
+const List<Choice> choices = const <Choice>[
+  const Choice(title: 'CAR', icon: Icons.directions_car),
+  const Choice(title: 'BICYCLE', icon: Icons.directions_bike),
+  const Choice(title: 'BOAT', icon: Icons.directions_boat),
+  const Choice(title: 'BUS', icon: Icons.directions_bus),
+  const Choice(title: 'TRAIN', icon: Icons.directions_railway),
+  const Choice(title: 'WALK', icon: Icons.directions_walk),
+];
 
-// class ChoiceCard extends StatelessWidget {
-//   const ChoiceCard({Key key, this.choice}) : super(key: key);
+class DrawerSection extends StatelessWidget {
+  const DrawerSection({Key key, this.choice}) : super(key: key);
 
-//   final Choice choice;
+  final Choice choice;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final TextStyle textStyle = Theme.of(context).textTheme.display1;
-//     return Card(
-//       color: Colors.white,
-//       child: Center(
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: <Widget>[
-//             Icon(choice.icon, size: 128.0, color: textStyle.color),
-//             Text(choice.title, style: textStyle),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Text('Drawer Header'),
+          ),
+          ListTile(
+            leading: Icon(Icons.message),
+            title: Text('Messages'),
+          ),
+          ListTile(
+            leading: Icon(Icons.account_circle),
+            title: Text('Profile'),
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+          ),
+        ],
+      ),
+    );
+  }
+}
