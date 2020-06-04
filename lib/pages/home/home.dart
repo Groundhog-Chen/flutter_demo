@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'dart:ui';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import '../new_page/new_page.dart';
+import '../new_page/new_page.dart';
 // import 'widget1.dart';
 import 'list_widget.dart';
 
@@ -15,8 +15,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
 
+  int _selectedIndex = 0;
+  
+  static BuildContext appContext;
+  
   @override
   void initState() {
     super.initState();
@@ -34,23 +37,56 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void onShowDialog() {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text('选择'),
+          children: <Widget>[
+            SimpleDialogOption(
+              child: Text('选项 1'),
+              onPressed: () {                                  
+                Navigator.of(context).pop();
+              },
+            ),
+            SimpleDialogOption(
+              child: Text('选项 2'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                return '21';
+              },
+            ),
+          ],
+        );
+      },
+    ).then((val) {
+      print(val);
+    });
+  }
   // Tab 列表内容
   List<Widget> bodyWidgets = <Widget>[
-    TabBarView(children: <Widget>[
-      ListWidget(),
-      Text('2'),
-      Text('3'),
-      Text('4'),
-      Text('5'),
-      Text('6')
-    ]),
-    Text('Map'),
-    Text('Forum'),
-    Text('Person'),
-  ];
-
+      TabBarView(children: <Widget>[
+        ListWidget(),
+        Text('2'),
+        Text('3'),
+        Text('4'),
+        Text('5'),
+        Text('6')
+      ]),
+      RaisedButton(
+        child: Text("normal"),
+        onPressed: () {
+          Navigator.push(appContext, MaterialPageRoute(builder: (BuildContext context) => NewRoute(text: '参数',)));
+        },
+      ),
+      Text('Forum'),
+      Text('Person'),
+    ];
+  
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
+    appContext = context;
     return MaterialApp(
       home: DefaultTabController(
         length: choices.length,
@@ -63,32 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.add),
-                    onPressed: () {
-                      showDialog<Null>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return SimpleDialog(
-                            title: Text('选择'),
-                            children: <Widget>[
-                              SimpleDialogOption(
-                                child: Text('选项 1'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              SimpleDialogOption(
-                                child: Text('选项 2'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      ).then((val) {
-                        print(val);
-                      });
-                    },
+                    onPressed: onShowDialog,
                   ),
                 ],
                 bottom: TabBar(
@@ -130,24 +141,25 @@ class _MyHomePageState extends State<MyHomePage> {
             //     mainAxisAlignment: MainAxisAlignment.spaceAround, //均分底部导航栏横向空间
             //   ),
             // )
-            BottomNavigationBar(
-              backgroundColor: Colors.blue,
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.pets), title: Text('Home')),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.map), title: Text('Map')),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.forum), title: Text('Forum')),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.person), title: Text('Person')),
-              ],
-              fixedColor: Colors.blue,
-              selectedFontSize: 10.0,
-              unselectedItemColor: Colors.grey,
-              currentIndex: _selectedIndex,
-              onTap: _onItemTapped,
-            )
+              BottomNavigationBar(
+                backgroundColor: Colors.blue,
+                items: <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.pets), title: Text('Home')),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.map), title: Text('Map')),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.forum), title: Text('Forum')),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.person), title: Text('Person')),
+                ],
+                fixedColor: Colors.blue,
+                selectedFontSize: 10.0,
+                unselectedItemColor: Colors.grey,
+                currentIndex: _selectedIndex,
+                unselectedFontSize: 10.0,
+                onTap: _onItemTapped,
+              )
             ),
       ),
     );
@@ -176,6 +188,7 @@ class DrawerSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -189,14 +202,17 @@ class DrawerSection extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.message),
             title: Text('Messages'),
+            onTap: () {},
           ),
           ListTile(
             leading: Icon(Icons.account_circle),
             title: Text('Profile'),
+            onTap: () {},
           ),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
+            onTap: () {},
           ),
         ],
       ),
