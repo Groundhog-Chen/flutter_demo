@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
+import '../player/player.dart';
 
 class ListWidget extends StatefulWidget {
   @override
@@ -10,6 +12,8 @@ class MyComponent extends State<ListWidget> {
   String name = 'tony';
 
   List data = List();
+
+  ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
@@ -39,58 +43,147 @@ class MyComponent extends State<ListWidget> {
     print('_onRefresh');
   }
 
-  ScrollController _scrollController = new ScrollController();
-
   Future<dynamic> initData() async {
     Dio dio = Dio();
     final Response response = await dio
         .get("http://rap2api.taobao.org/app/mock/225870/api/chat/list");
     setState(() {
       data.addAll(response.data['chat_list']);
-      // data = response.data['chat_list'];
     });
     print(data.length);
   }
 
-  // @override
-  // void didUpdateWidget(Widget2 oldWidget) {
-  //   if (widget.tabIndex == 2) {
-  //     initData();
-  //   }
-  //   super.didUpdateWidget(oldWidget);
-  // }
-
-  // 构建列表
-  Widget _itemBuilder(BuildContext context, int index) {
-    return Card(
-      margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-      child: ListTile(
-        leading: Image(
-          width: 64.0,
-          height: 64.0,
-          image: NetworkImage(data[index]['imageUrl']),
+  List<Widget> getData() {
+    var tempList = data.map((item) {
+      return Container(
+        margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+        child: Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          elevation: 0.0,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: Image.network(
+                  "http://via.placeholder.com/150x150",
+                  fit: BoxFit.fill,
+                ),
+                title: Text('${item['name']}'),
+                subtitle:
+                    Text(item['message'], overflow: TextOverflow.ellipsis),
+                isThreeLine: true,
+              )
+            ],
+          ),
         ),
-        title: Text(
-          '${data[index]['name']}'
-        ),
-        subtitle: Text(
-          data[index]['message'],
-          overflow: TextOverflow.ellipsis
-        ),
-        trailing: Icon(Icons.more_vert, color: Colors.blue,),
-        isThreeLine: true,
-      ),
-    );
+      );
+    });
+    return tempList.toList();
   }
 
-  // props 从 widget.xxx 获取
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
         onRefresh: _onRefresh,
-        child: ListView.builder(
-            itemCount: data.length,
-            controller: _scrollController,
-            itemBuilder: _itemBuilder));
+        child: ListView(
+          controller: _scrollController,
+          children: <Widget>[
+            Container(
+              height: 150.0,
+              child: new Swiper(
+                onTap: (i) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => PlayerPage()));
+                },
+                itemBuilder: (BuildContext context, int index) {
+                  return new Image.network(
+                    "http://via.placeholder.com/350x150",
+                    fit: BoxFit.fill,
+                  );
+                },
+                autoplay: true,
+                itemCount: 3,
+                pagination: new SwiperPagination(),
+                // control: new SwiperControl(),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(20.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Column(
+                        children: <Widget>[
+                          CircleAvatar(
+                            radius: 30,
+                            child: Text('A'),
+                            backgroundColor: Colors.grey[200],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 8.0),
+                            child: Text('BTN',
+                                style: TextStyle(color: Colors.grey)),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      child: Column(
+                        children: <Widget>[
+                          CircleAvatar(
+                            radius: 30,
+                            child: Text('A'),
+                            backgroundColor: Colors.grey[200],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 8.0),
+                            child: Text('BTN',
+                                style: TextStyle(color: Colors.grey)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      child: Column(
+                        children: <Widget>[
+                          CircleAvatar(
+                            radius: 30,
+                            child: Text('A'),
+                            backgroundColor: Colors.grey[200],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 8.0),
+                            child: Text('BTN',
+                                style: TextStyle(color: Colors.grey)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      child: Column(
+                        children: <Widget>[
+                          CircleAvatar(
+                            radius: 30,
+                            child: Text('A'),
+                            backgroundColor: Colors.grey[200],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 8.0),
+                            child: Text('BTN',
+                                style: TextStyle(color: Colors.grey)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]),
+            ),
+            Column(
+              children: getData(),
+            )
+          ],
+        ));
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../model/provider/store.dart';
 
 class NewRoute extends StatelessWidget {
   NewRoute({
@@ -17,10 +19,17 @@ class NewRoute extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text(text),
+            Text('${context.watch<Counter>().count}'),
             RaisedButton(
               onPressed: () => Navigator.pop(context, 15),
-              child: Text("返回"),
-            )
+              child: Text("返回上一页"),
+            ),
+            RaisedButton(
+              onPressed: () {
+                context.read<Counter>().increment();
+              },
+              child: Text("增量"),
+            ),
           ],
         ),
       ),

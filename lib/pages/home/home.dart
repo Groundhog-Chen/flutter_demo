@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-// import 'dart:ui';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../new_page/new_page.dart';
-// import 'widget1.dart';
 import 'list_widget.dart';
+import 'list.dart';
+import 'videos.dart';
+import 'profile.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -15,11 +14,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   int _selectedIndex = 0;
-  
+
   static BuildContext appContext;
-  
+
   @override
   void initState() {
     super.initState();
@@ -32,190 +30,155 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onItemTapped(int index) {
+    // if (index == 2) {
+    //   Navigator.push(
+    //       appContext,
+    //       MaterialPageRoute(
+    //           builder: (BuildContext context) => NewRoute(text: '播放页')));
+    //   return;
+    // }
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  void onShowDialog() {
-    showDialog<String>(
-      context: context,
+  static onShowDialog() async {
+    return showDialog<void>(
+      context: appContext,
       builder: (BuildContext context) {
-        return SimpleDialog(
-          title: Text('选择'),
-          children: <Widget>[
-            SimpleDialogOption(
-              child: Text('选项 1'),
-              onPressed: () {                                  
+        return AlertDialog(
+          title: Text('关于'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('This is a demo alert dialog.'),
+                Text('Would you like to approve of this message?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('取消'),
+              onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            SimpleDialogOption(
-              child: Text('选项 2'),
+            RaisedButton(
+              child: Text('确认'),
+              color: Colors.blue,
               onPressed: () {
                 Navigator.of(context).pop();
-                return '21';
               },
             ),
           ],
         );
       },
-    ).then((val) {
-      print(val);
-    });
+    );
   }
+
   // Tab 列表内容
   List<Widget> bodyWidgets = <Widget>[
-      TabBarView(children: <Widget>[
-        ListWidget(),
-        Text('2'),
-        Text('3'),
-        Text('4'),
-        Text('5'),
-        Text('6')
-      ]),
-      RaisedButton(
-        child: Text("normal"),
-        onPressed: () {
-          Navigator.push(appContext, MaterialPageRoute(builder: (BuildContext context) => NewRoute(text: '参数',)));
-        },
+    TabBarView(
+        children: <Widget>[ListWidget(), Text('2'), Text('3'), Text('4')]),
+    VideosWidget(),
+    ListPage(),
+    ProfileWidget(),
+  ];
+
+  // AppBar 内容
+  List<Widget> appBars = <Widget>[
+    AppBar(
+      iconTheme: IconThemeData(color: Colors.black),
+      elevation: 0.0,
+      backgroundColor: Colors.white,
+      title: TabBar(
+        isScrollable: true,
+        labelColor: Colors.black,
+        indicatorColor: Colors.white,
+        labelStyle: TextStyle(fontSize: 21.0),
+        unselectedLabelStyle: TextStyle(fontSize: 14.0),
+        tabs: choices.map((Choice choice) {
+          return Tab(text: choice.title);
+        }).toList(),
       ),
-      Text('Forum'),
-      Text('Person'),
-    ];
-  
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.all_inclusive),
+          onPressed: onShowDialog,
+        )
+      ],
+      // bottom: ,
+    ),
+    AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        title: Text(
+          '视频',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        )),
+    AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        title: Text('列表', style: TextStyle(color: Colors.black))),
+    AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        title: Text('个人中心', style: TextStyle(color: Colors.black))),
+  ];
+
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     appContext = context;
     return MaterialApp(
       home: DefaultTabController(
         length: choices.length,
-        initialIndex: 1,
         child: Scaffold(
-            backgroundColor: Colors.grey.shade200,
-            appBar: <Widget>[
-              AppBar(
-                title: Text('Home'),
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.add),
-                    onPressed: onShowDialog,
-                  ),
-                ],
-                bottom: TabBar(
-                  isScrollable: true,
-                  tabs: choices.map((Choice choice) {
-                    return Tab(text: choice.title);
-                  }).toList(),
-                ),
-              ),
-              AppBar(title: Text('Map')),
-              AppBar(title: Text('Forum')),
-              AppBar(title: Text('Person'))
-            ].elementAt(_selectedIndex),
+            backgroundColor: Colors.white,
+            appBar: appBars.elementAt(_selectedIndex),
             body: bodyWidgets.elementAt(_selectedIndex),
-            drawer: DrawerSection(),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                // Add your onPressed code here!
-              },
-              child: Icon(Icons.camera_alt),
+            bottomNavigationBar: BottomNavigationBar(
               backgroundColor: Colors.blue,
-            ),
-            bottomNavigationBar: 
-            // BottomAppBar(
-            //   color: Colors.white,
-            //   shape: CircularNotchedRectangle(), // 底部导航栏打一个圆形的洞
-            //   child: Row(
-            //     children: [
-            //       IconButton(
-            //           icon: Icon(Icons.home),
-            //           onPressed: () {
-            //           }),
-            //       SizedBox(), //中间位置空出
-            //       IconButton(
-            //           icon: Icon(Icons.business),
-            //           onPressed: () {
-            //           }),
-            //     ],
-            //     mainAxisAlignment: MainAxisAlignment.spaceAround, //均分底部导航栏横向空间
-            //   ),
-            // )
-              BottomNavigationBar(
-                backgroundColor: Colors.blue,
-                items: <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.pets), title: Text('Home')),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.map), title: Text('Map')),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.forum), title: Text('Forum')),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.person), title: Text('Person')),
-                ],
-                fixedColor: Colors.blue,
-                selectedFontSize: 10.0,
-                unselectedItemColor: Colors.grey,
-                currentIndex: _selectedIndex,
-                unselectedFontSize: 10.0,
-                onTap: _onItemTapped,
-              )
-            ),
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.track_changes), title: Text('推荐')),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.live_tv), title: Text('视频')),
+                // BottomNavigationBarItem(
+                //     icon: Icon(
+                //       Icons.play_circle_outline,
+                //       size: 40,
+                //     ),
+                //     title: Text(' ')),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.queue_music), title: Text('列表')),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person), title: Text('我的')),
+              ],
+              fixedColor: Colors.blue,
+              selectedFontSize: 10.0,
+              unselectedItemColor: Colors.grey,
+              currentIndex: _selectedIndex,
+              unselectedFontSize: 10.0,
+              onTap: _onItemTapped,
+            )),
       ),
     );
   }
 }
 
 class Choice {
-  const Choice({this.title, this.icon});
+  const Choice({this.title});
   final String title;
-  final IconData icon;
 }
 
 const List<Choice> choices = const <Choice>[
-  const Choice(title: 'CAR', icon: Icons.directions_car),
-  const Choice(title: 'BICYCLE', icon: Icons.directions_bike),
-  const Choice(title: 'BOAT', icon: Icons.directions_boat),
-  const Choice(title: 'BUS', icon: Icons.directions_bus),
-  const Choice(title: 'TRAIN', icon: Icons.directions_railway),
-  const Choice(title: 'WALK', icon: Icons.directions_walk),
+  const Choice(title: '今日推荐'),
+  const Choice(title: '猜你喜欢'),
+  const Choice(title: '排行榜'),
+  const Choice(title: '乐库'),
 ];
-
-class DrawerSection extends StatelessWidget {
-  const DrawerSection({Key key, this.choice}) : super(key: key);
-
-  final Choice choice;
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Text('Drawer Header'),
-          ),
-          ListTile(
-            leading: Icon(Icons.message),
-            title: Text('Messages'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(Icons.account_circle),
-            title: Text('Profile'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () {},
-          ),
-        ],
-      ),
-    );
-  }
-}
