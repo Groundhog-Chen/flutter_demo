@@ -37,8 +37,7 @@ class MyComponent extends State<PlayerPage>
 
   @override
   void initState() {
-    _animationController =
-        AnimationController(duration: Duration(seconds: 10), vsync: this);
+    _animationController = AnimationController(vsync: this, duration: Duration(seconds: 10));
     _animation = Tween(begin: 0.0, end: 1.0).animate(_animationController);
     super.initState();
     _animationController.addStatusListener((status) {

@@ -57,8 +57,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
-              child: Text('取消'),
+            OutlineButton(
+              child: Text(
+                '取消',
+                style: TextStyle(color: Colors.black87),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -145,9 +148,13 @@ class _MyHomePageState extends State<MyHomePage> {
               backgroundColor: Colors.blue,
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.track_changes), title: Text('推荐')),
+                    // ignore: deprecated_member_use
+                    icon: Icon(Icons.track_changes),
+                    label: '推荐'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.live_tv), title: Text('视频')),
+                    // ignore: deprecated_member_use
+                    icon: Icon(Icons.live_tv),
+                    label: '视频'),
                 // BottomNavigationBarItem(
                 //     icon: Icon(
                 //       Icons.play_circle_outline,
@@ -155,9 +162,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 //     ),
                 //     title: Text(' ')),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.queue_music), title: Text('列表')),
+                    // ignore: deprecated_member_use
+                    icon: Icon(Icons.queue_music),
+                    label: '列表'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.person), title: Text('我的')),
+                    // ignore: deprecated_member_use
+                    icon: Icon(Icons.person),
+                    label: '我的'),
               ],
               fixedColor: Colors.blue,
               selectedFontSize: 10.0,
