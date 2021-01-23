@@ -23,7 +23,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(platform: TargetPlatform.iOS),
+      theme: ThemeData(
+          scaffoldBackgroundColor: Color.fromRGBO(253, 253, 253, 1),
+          platform: TargetPlatform.iOS,
+          buttonTheme:
+              ButtonThemeData(buttonColor: Color.fromRGBO(26, 167, 128, 1)),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+              foregroundColor: Color.fromRGBO(26, 167, 128, 1),
+              backgroundColor: Color.fromRGBO(26, 167, 128, 1)),
+          primaryColor: Color.fromRGBO(26, 167, 128, 1)),
       routes: {"new_page": (context, {text}) => NewRoute(text: text)},
       home: MyHomePage(title: 'Flutter 播放器'),
     );

@@ -31,6 +31,7 @@ class MyComponent extends State<ListWidget> {
 
   @override
   void dispose() {
+    print('dispose');
     _scrollController.dispose();
     super.dispose();
   }
@@ -69,6 +70,7 @@ class MyComponent extends State<ListWidget> {
                   fit: BoxFit.fill,
                 ),
                 title: Text('${item['name']}'),
+                onTap: () {},
                 subtitle:
                     Text(item['message'], overflow: TextOverflow.ellipsis),
                 isThreeLine: true,
@@ -106,7 +108,6 @@ class MyComponent extends State<ListWidget> {
                 autoplay: true,
                 itemCount: 3,
                 pagination: new SwiperPagination(),
-                // control: new SwiperControl(),
               ),
             ),
             Container(
@@ -114,70 +115,62 @@ class MyComponent extends State<ListWidget> {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          CircleAvatar(
-                            radius: 30,
-                            child: Text('A'),
-                            backgroundColor: Colors.grey[200],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 8.0),
-                            child: Text('BTN',
-                                style: TextStyle(color: Colors.grey)),
-                          )
-                        ],
-                      ),
+                    Column(
+                      children: <Widget>[
+                        CircleAvatar(
+                          radius: 30,
+                          child: Text('A'),
+                          backgroundColor: Colors.grey[200],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 8.0),
+                          child:
+                              Text('BTN', style: TextStyle(color: Colors.grey)),
+                        )
+                      ],
                     ),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          CircleAvatar(
-                            radius: 30,
-                            child: Text('A'),
-                            backgroundColor: Colors.grey[200],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 8.0),
-                            child: Text('BTN',
-                                style: TextStyle(color: Colors.grey)),
-                          ),
-                        ],
-                      ),
+                    Column(
+                      children: <Widget>[
+                        CircleAvatar(
+                          radius: 30,
+                          child: Text('A'),
+                          backgroundColor: Colors.grey[200],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 8.0),
+                          child:
+                              Text('BTN', style: TextStyle(color: Colors.grey)),
+                        )
+                      ],
                     ),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          CircleAvatar(
-                            radius: 30,
-                            child: Text('A'),
-                            backgroundColor: Colors.grey[200],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 8.0),
-                            child: Text('BTN',
-                                style: TextStyle(color: Colors.grey)),
-                          ),
-                        ],
-                      ),
+                    Column(
+                      children: <Widget>[
+                        CircleAvatar(
+                          radius: 30,
+                          child: Text('A'),
+                          backgroundColor: Colors.grey[200],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 8.0),
+                          child:
+                              Text('BTN', style: TextStyle(color: Colors.grey)),
+                        )
+                      ],
                     ),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          CircleAvatar(
-                            radius: 30,
-                            child: Text('A'),
-                            backgroundColor: Colors.grey[200],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 8.0),
-                            child: Text('BTN',
-                                style: TextStyle(color: Colors.grey)),
-                          ),
-                        ],
-                      ),
-                    ),
+                    Column(
+                      children: <Widget>[
+                        CircleAvatar(
+                          radius: 30,
+                          child: Text('A'),
+                          backgroundColor: Colors.grey[200],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 8.0),
+                          child:
+                              Text('BTN', style: TextStyle(color: Colors.grey)),
+                        )
+                      ],
+                    )
                   ]),
             ),
             Column(

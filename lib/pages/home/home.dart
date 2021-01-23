@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../model/provider/store.dart';
 import 'list_widget.dart';
 import 'list.dart';
 import 'videos.dart';
 import 'profile.dart';
+import '../player/player.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -29,48 +32,44 @@ class _MyHomePageState extends State<MyHomePage> {
     super.deactivate();
   }
 
-  void _onItemTapped(int index) {
-    // if (index == 2) {
-    //   Navigator.push(
-    //       appContext,
-    //       MaterialPageRoute(
-    //           builder: (BuildContext context) => NewRoute(text: '播放页')));
-    //   return;
-    // }
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   static onShowDialog() async {
     return showDialog<void>(
       context: appContext,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('关于'),
+          title: Text('提示'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('This is a demo alert dialog.'),
-                Text('Would you like to approve of this message?'),
+                Text('确定要把楼主关进小黑屋吗？'),
+                // TextFormField(
+                //   onChanged: (value) {
+                //     print('$value');
+                //   },
+                //   validator: (String value) {
+                //     return value.length >= 6 ? null : '账号最少6个字符';
+                //   },
+                // )
               ],
             ),
           ),
           actions: <Widget>[
-            OutlineButton(
+            TextButton(
               child: Text(
                 '取消',
                 style: TextStyle(color: Colors.black87),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                context.read<Counter>().decrement();
               },
             ),
-            RaisedButton(
-              child: Text('确认'),
-              color: Colors.blue,
+            TextButton(
+              child: Text('确认',
+                  style: TextStyle(color: Color.fromRGBO(26, 167, 128, 1))),
               onPressed: () {
                 Navigator.of(context).pop();
+                context.read<Counter>().increment();
               },
             ),
           ],
@@ -141,41 +140,79 @@ class _MyHomePageState extends State<MyHomePage> {
       home: DefaultTabController(
         length: choices.length,
         child: Scaffold(
-            backgroundColor: Colors.white,
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: Color.fromRGBO(254, 149, 62, 1),
+              child: Icon(
+                Icons.add,
+                size: 38.0,
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => PlayerPage()));
+              },
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
             appBar: appBars.elementAt(_selectedIndex),
             body: bodyWidgets.elementAt(_selectedIndex),
-            bottomNavigationBar: BottomNavigationBar(
-              backgroundColor: Colors.blue,
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                    // ignore: deprecated_member_use
-                    icon: Icon(Icons.track_changes),
-                    label: '推荐'),
-                BottomNavigationBarItem(
-                    // ignore: deprecated_member_use
+            bottomNavigationBar: BottomAppBar(
+              shape: CircularNotchedRectangle(),
+              elevation: 16,
+              notchMargin: 7,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  IconButton(
+                    color: _selectedIndex == 0
+                        ? Color.fromRGBO(1, 166, 121, 1)
+                        : Color.fromRGBO(201, 202, 202, 1),
+                    icon: Icon(Icons.whatshot),
+                    onPressed: () {
+                      setState(() {
+                        _selectedIndex = 0;
+                      });
+                    },
+                  ),
+                  IconButton(
+                    color: _selectedIndex == 1
+                        ? Color.fromRGBO(1, 166, 121, 1)
+                        : Color.fromRGBO(201, 202, 202, 1),
                     icon: Icon(Icons.live_tv),
-                    label: '视频'),
-                // BottomNavigationBarItem(
-                //     icon: Icon(
-                //       Icons.play_circle_outline,
-                //       size: 40,
-                //     ),
-                //     title: Text(' ')),
-                BottomNavigationBarItem(
-                    // ignore: deprecated_member_use
+                    onPressed: () {
+                      setState(() {
+                        _selectedIndex = 1;
+                      });
+                    },
+                  ),
+                  Text(''),
+                  Text(''),
+                  Text(''),
+                  IconButton(
+                    color: _selectedIndex == 2
+                        ? Color.fromRGBO(1, 166, 121, 1)
+                        : Color.fromRGBO(201, 202, 202, 1),
                     icon: Icon(Icons.queue_music),
-                    label: '列表'),
-                BottomNavigationBarItem(
-                    // ignore: deprecated_member_use
-                    icon: Icon(Icons.person),
-                    label: '我的'),
-              ],
-              fixedColor: Colors.blue,
-              selectedFontSize: 10.0,
-              unselectedItemColor: Colors.grey,
-              currentIndex: _selectedIndex,
-              unselectedFontSize: 10.0,
-              onTap: _onItemTapped,
+                    onPressed: () {
+                      setState(() {
+                        _selectedIndex = 2;
+                      });
+                    },
+                  ),
+                  IconButton(
+                    color: _selectedIndex == 3
+                        ? Color.fromRGBO(1, 166, 121, 1)
+                        : Color.fromRGBO(201, 202, 202, 1),
+                    icon: Icon(Icons.account_circle),
+                    onPressed: () {
+                      setState(() {
+                        _selectedIndex = 3;
+                      });
+                    },
+                  )
+                ],
+              ),
             )),
       ),
     );
