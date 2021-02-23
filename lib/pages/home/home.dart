@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/provider/store.dart';
 import 'list_widget.dart';
 import 'list.dart';
@@ -21,8 +22,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static BuildContext appContext;
 
+  setUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('userName', "喵喵喵~~");
+  }
+
   @override
   void initState() {
+    setUserName();
     super.initState();
   }
 
@@ -147,6 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 size: 38.0,
               ),
               onPressed: () {
+                setUserName();
                 Navigator.push(
                     context,
                     MaterialPageRoute(
