@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'bottom_widget.dart';
 
 // ignore: must_be_immutable
@@ -16,10 +17,18 @@ class MyComponent extends State<PlayerPage>
   bool isPlay = false;
   AnimationController _animationController;
   Animation _animation;
+  String userName = 'hhhhhh';
   void _onClose() {
     print('close');
     setState(() {
       _visible = false;
+    });
+  }
+
+  getUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('userName');
     });
   }
 
@@ -38,8 +47,9 @@ class MyComponent extends State<PlayerPage>
   @override
   void initState() {
     _animationController =
-        AnimationController(duration: Duration(seconds: 10), vsync: this);
+        AnimationController(vsync: this, duration: Duration(seconds: 10));
     _animation = Tween(begin: 0.0, end: 1.0).animate(_animationController);
+    getUserName();
     super.initState();
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -96,7 +106,7 @@ class MyComponent extends State<PlayerPage>
                   elevation: 0.0,
                   backgroundColor: Colors.transparent,
                   title: Text(
-                    '喵~~~',
+                    userName,
                     style: TextStyle(
                       color: Colors.white,
                     ),

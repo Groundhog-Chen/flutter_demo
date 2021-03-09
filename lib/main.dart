@@ -23,51 +23,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(platform: TargetPlatform.iOS),
+      theme: ThemeData(
+          scaffoldBackgroundColor: Color.fromRGBO(253, 253, 253, 1),
+          platform: TargetPlatform.iOS,
+          buttonTheme:
+              ButtonThemeData(buttonColor: Color.fromRGBO(26, 167, 128, 1)),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+              foregroundColor: Color.fromRGBO(26, 167, 128, 1),
+              backgroundColor: Color.fromRGBO(26, 167, 128, 1)),
+          primaryColor: Color.fromRGBO(26, 167, 128, 1)),
       routes: {"new_page": (context, {text}) => NewRoute(text: text)},
       home: MyHomePage(title: 'Flutter 播放器'),
     );
   }
 }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       home: MyHomePage(),
-//     );
-//   }
-// }
-
-// class MyHomePage extends StatelessWidget {
-//   const MyHomePage({Key key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Example'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Text('You have pushed the button this many times:'),
-//             Count(),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {
-//           context.read<Counter>().increment();
-//         },
-//         tooltip: 'Increment',
-//         child: Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }
 
 class Count extends StatelessWidget {
   const Count({Key key}) : super(key: key);
