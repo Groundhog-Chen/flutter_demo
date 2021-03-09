@@ -74,7 +74,7 @@ class MyComponent extends State<PlayerPage>
             width: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('images/timg.jpg'),
+                image: AssetImage('images/psc.jpeg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -115,7 +115,7 @@ class MyComponent extends State<PlayerPage>
                   width: 6,
                 ),
                 image: DecorationImage(
-                  image: AssetImage('images/timg.jpg'),
+                  image: AssetImage('images/psc.jpeg'),
                   fit: BoxFit.cover,
                 ),
               ),
