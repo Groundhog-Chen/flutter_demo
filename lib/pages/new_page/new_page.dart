@@ -20,11 +20,11 @@ class NewRoute extends StatelessWidget {
           children: <Widget>[
             Text(text),
             Text('${context.watch<Counter>().count}'),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () => Navigator.pop(context, 15),
               child: Text("返回上一页"),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 context.read<Counter>().increment();
               },
