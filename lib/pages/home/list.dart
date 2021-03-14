@@ -7,7 +7,7 @@ class ListPage extends StatefulWidget {
 }
 
 class MyComponent extends State<ListPage> {
-  List data = List();
+  List data = [];
 
   ScrollController _scrollController = new ScrollController();
 
@@ -33,7 +33,7 @@ class MyComponent extends State<ListPage> {
 
   Future<void> _onRefresh() async {
     setState(() {
-      data = List();
+      data = [];
     });
     initData();
     print('_onRefresh');

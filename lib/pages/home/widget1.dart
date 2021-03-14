@@ -23,11 +23,11 @@ class MyComponent extends State<StateWrap> {
       child: Column(
         children: <Widget>[
           Text(widget.title),
-          RaisedButton(
-            child: const Text('Press',),
-            color: Colors.blue, 
-            onPressed: widget.onPress
-          ),
+          ElevatedButton(
+              child: const Text(
+                'Press',
+              ),
+              onPressed: widget.onPress),
         ],
       ),
     );

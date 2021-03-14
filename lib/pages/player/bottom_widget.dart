@@ -11,7 +11,7 @@ class StateWrap extends StatefulWidget {
 }
 
 class MyComponent extends State<StateWrap> {
-  List data = List();
+  List data = [];
 
   @override
   void initState() {
